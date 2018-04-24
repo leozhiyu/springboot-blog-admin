@@ -20,59 +20,45 @@ public class User {
     @Column(columnDefinition = "int COMMENT '主键id'")
     private Integer userId;
 
-    /**用户名*/
     @Column(columnDefinition = "varchar(30) COMMENT '用户名'")
     @NotNull(message = "用户名不能为空")
     private String userName;
-
-    /**用户邮箱*/
 
     @Column(columnDefinition = "varchar(30) COMMENT '邮箱'")
     @NotNull(message = "邮箱不能为空")
     private String userEmail;
 
-    /**登录密码*/
     @Column(columnDefinition = "varchar(30) COMMENT '密码'")
     @NotNull(message = "密码不能为空")
     private String userPwd;
 
-    /**open_id*/
     @Column(columnDefinition = "varchar(30) COMMENT 'open_id'")
     private String userOpenId;
 
-    /**微信*/
     @Column(columnDefinition = "varchar(30) COMMENT '微信'")
     private String userWechat;
 
-    /**QQ*/
     @Column(columnDefinition = "varchar(30) COMMENT 'QQ'")
     private String userQq;
 
-    /**微博*/
     @Column(columnDefinition = "varchar(30) COMMENT '微博'")
     private String userWeibo;
 
-    /**GitHub*/
     @Column(columnDefinition = "varchar(30) COMMENT 'GitHub'")
     private String userGithub;
 
-    /**用户头像*/
     @Column(columnDefinition = "blob COMMENT '用户头像'")
     private byte[] userIcon;
 
-    /**个性签名*/
     @Column(columnDefinition = "varchar(255) COMMENT '个性签名'")
     private String userSignature;
 
-    /**关于我*/
     @Column(columnDefinition = "text COMMENT '关于我'")
     private String userAbout;
 
-    /**用户创建时间*/
     @Column(columnDefinition = "datetime COMMENT '创建时间'")
     private Date createTime;
 
-    /**用户信息修改时间*/
     @Column(columnDefinition = "datetime COMMENT '修改时间'")
     private Date modifyTime;
 
