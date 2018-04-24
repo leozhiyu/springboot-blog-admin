@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver # 设置驱动
+    url: jdbc:mysql://127.0.0.1:3306/blog?characterEncoding=UTF-8 #设置数据库，不设置UTF-8会导致中文注释出现乱码
+    username: root
+    password:
+  jpa: # 添加jpa支持
+    hibernate:
+      ddl-auto: update #update方式避免清空数据
+    show-sql: true #打印sql语句
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect #设置创建表时设置的引擎,InnoDB支持事务，MyISAM不支持事务
