@@ -13,11 +13,11 @@
 	<name>springboot-blog-admin</name>
 	<description>Demo project for Spring Boot</description>
 
-	<!--引用父pom，使用springboot 1.x 版本-->
+	<!--引用父pom，使用springboot 1.5.x 版本-->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.4.1.RELEASE</version>
+		<version>1.5.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
