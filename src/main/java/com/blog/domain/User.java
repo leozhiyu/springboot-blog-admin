@@ -20,7 +20,7 @@ public class User {
     @Column(columnDefinition = "int COMMENT '主键id'")
     private Integer userId;
 
-    @Column(columnDefinition = "varchar(30) COMMENT '用户名'")
+    @Column(columnDefinition = "varchar(30) COMMENT '用户名'", unique = true)
     @NotNull(message = "用户名不能为空")
     private String userName;
 
@@ -28,7 +28,7 @@ public class User {
     @NotNull(message = "邮箱不能为空")
     private String userEmail;
 
-    @Column(columnDefinition = "varchar(30) COMMENT '密码'")
+    @Column(columnDefinition = "varchar(255) COMMENT '密码'")
     @NotNull(message = "密码不能为空")
     private String userPwd;
 

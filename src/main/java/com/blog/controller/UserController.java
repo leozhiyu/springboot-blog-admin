@@ -24,6 +24,8 @@ public class UserController {
 
     /**
      * 博客用户登录
+     * @param username
+     * @param password
      * @return
      */
     @PostMapping(value = "/user")
