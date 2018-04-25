@@ -53,7 +53,7 @@ public class UserService {
         User user = userResponsitory.findByUserName(userName);
         if (user != null) {
             return ENCODER.isPasswordValid(user.getUserPwd(), password, userName)
-                    ? ResultUtil.success("用户登录成功", user.getUserName())
+                    ? ResultUtil.success("用户登录成功了吗", user.getUserName())
                     : ResultUtil.error("密码错误");
         }
         return ResultUtil.error("该用户不存在");
