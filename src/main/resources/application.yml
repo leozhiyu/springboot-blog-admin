@@ -9,7 +9,7 @@ spring:
       ddl-auto: update #update方式避免清空数据
     show-sql: true #打印sql语句
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect #设置创建表时设置的引擎,InnoDB支持事务，MyISAM不支持事务
-security:
-  user:
-    name: admin
-    password: admin # 修改 Spring Security 默认的用户名和密码
+# security:
+#  user:
+#    name: admin
+#     password: admin # 修改 Spring Security 默认的用户名和密码
