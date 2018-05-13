@@ -20,6 +20,6 @@ public class UserServiceTest {
         user.setUserName("admin");
         user.setUserPwd("admin");
         user.setUserEmail("admin@admin.com");
-        userService.regist(user);
+        userService.register(user);
     }
 }

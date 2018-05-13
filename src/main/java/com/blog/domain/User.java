@@ -6,6 +6,11 @@
  */
 package com.blog.domain;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -56,9 +61,13 @@ public class User {
     @Column(columnDefinition = "text COMMENT '关于我'")
     private String userAbout;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     @Column(columnDefinition = "datetime COMMENT '创建时间'")
     private Date createTime;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
     @Column(columnDefinition = "datetime COMMENT '修改时间'")
     private Date modifyTime;
 
