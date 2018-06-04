@@ -2,8 +2,12 @@ package com.blog.filter;
 
 
 import com.blog.constant.JWTConstant;
+import com.blog.domain.Result;
 import com.blog.domain.User;
+import com.blog.responsitory.UserResponsitory;
+import com.blog.service.UserService;
 import com.blog.util.JWTUtil;
+import com.blog.util.ResultUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -72,7 +78,29 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        //获取spring 容器 登录成功返回用户信息
+        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(req.getSession().getServletContext());
+        UserResponsitory userResponsitory = webApplicationContext.getBean(UserResponsitory.class);
+        res.setContentType("application/json;charset=utf-8");
+        User user = userResponsitory.findByUserName(username);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Result result = ResultUtil.success(user);
+        res.getWriter().print(objectMapper.writeValueAsString(result));
+        res.setHeader("Access-Control-Expose-Headers", "Authorization");
         res.addHeader("Authorization", token);
         res.getWriter().flush();
     }
+
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
+        log.error("登录错误");
+
+        response.setContentType("application/json;charset=utf-8");
+        ObjectMapper objectMapper = new ObjectMapper();
+        Result result = ResultUtil.error(failed.getMessage());
+        response.getWriter().print(objectMapper.writeValueAsString(result));
+        response.getWriter().flush();
+    }
+
 }

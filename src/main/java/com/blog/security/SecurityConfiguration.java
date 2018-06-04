@@ -1,5 +1,6 @@
 package com.blog.security;
 
+import com.blog.filter.CorsControllerFilter;
 import com.blog.filter.JWTLoginFilter;
 import com.blog.filter.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.context.SecurityContextPersistenceFilter;
+import org.springframework.web.cors.CorsUtils;
 
 /**
  * @author yukong
@@ -28,6 +31,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
     MyUserDetailServiceImpl myUserDetailService;
+    @Autowired
+    CorsControllerFilter corsControllerFilter;
 
 
     @Override
@@ -40,9 +45,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user")
                 .permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/login")
+                .permitAll()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
+                .addFilterBefore(corsControllerFilter, SecurityContextPersistenceFilter.class)
                 .addFilter(new JWTLoginFilter(authenticationManager()))
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .csrf().disable();

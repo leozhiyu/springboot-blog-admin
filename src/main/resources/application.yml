@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver # 设置驱动
     url: jdbc:mysql://115.159.219.176:3306/blog?characterEncoding=UTF-8 #设置数据库，不设置UTF-8会导致中文注释出现乱码
     username: root
-    password: root
+    password: abc123
   jpa: # 添加jpa支持
     hibernate:
       ddl-auto: update #update方式避免清空数据
