@@ -1,6 +1,6 @@
 package com.blog.security;
 
-import com.blog.responsitory.UserResponsitory;
+import com.blog.responsitory.UserRespository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -21,9 +21,9 @@ import org.springframework.stereotype.Component;
 public class MyUserDetailServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UserResponsitory userResponsitory;
+    private UserRespository userResponsitory;
 
-    public MyUserDetailServiceImpl( UserResponsitory userResponsitory) {
+    public MyUserDetailServiceImpl( UserRespository userResponsitory) {
         this.userResponsitory = userResponsitory;
     }
 

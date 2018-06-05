@@ -15,12 +15,17 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-//标记为实体以及对应的表，如果不加此注解，即使在yml配置了jpa也不会生效
+/**
+ * 标记为实体以及对应的表，如果不加此注解，即使在yml配置了jpa也不会生效
+ */
 @Entity
 @Table(name = "tb_user")
 public class User {
 
-    @Id //标记为id以及自动增长，注意导入的是jpa中的包
+    /**
+     * 标记为id以及自动增长，注意导入的是jpa中的包
+     */
+    @Id
     @GeneratedValue
     @Column(columnDefinition = "int COMMENT '主键id'")
     private Integer userId;

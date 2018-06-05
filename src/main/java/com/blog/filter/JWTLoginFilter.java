@@ -4,7 +4,7 @@ package com.blog.filter;
 import com.blog.constant.JWTConstant;
 import com.blog.domain.Result;
 import com.blog.domain.User;
-import com.blog.responsitory.UserResponsitory;
+import com.blog.responsitory.UserRespository;
 import com.blog.service.UserService;
 import com.blog.util.JWTUtil;
 import com.blog.util.ResultUtil;
@@ -80,7 +80,7 @@ public class JWTLoginFilter extends UsernamePasswordAuthenticationFilter {
         }
         //获取spring 容器 登录成功返回用户信息
         WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(req.getSession().getServletContext());
-        UserResponsitory userResponsitory = webApplicationContext.getBean(UserResponsitory.class);
+        UserRespository userResponsitory = webApplicationContext.getBean(UserRespository.class);
         res.setContentType("application/json;charset=utf-8");
         User user = userResponsitory.findByUserName(username);
         ObjectMapper objectMapper = new ObjectMapper();
