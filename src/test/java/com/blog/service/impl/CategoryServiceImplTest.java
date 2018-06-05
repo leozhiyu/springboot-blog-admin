@@ -27,11 +27,10 @@ public class CategoryServiceImplTest {
     @Test
     public void listByCondition() throws JsonProcessingException {
 
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"modifyTime");
-        Sort sort = new Sort(order);
+
         CategoryCondition categoryCondition = new CategoryCondition();
         categoryCondition.setCategoryName("java");
-        Page<Category> page = categoryService.listByCondition(categoryCondition,sort);
+        Page<Category> page = categoryService.listByCondition(categoryCondition);
         ObjectMapper mapper = new ObjectMapper();
         System.out.println(mapper.writeValueAsString(page));
 

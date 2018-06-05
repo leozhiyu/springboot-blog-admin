@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -26,13 +27,15 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryRepository categoryRepository;
 
     @Override
-    public Page<Category> listByCondition(CategoryCondition categoryCondition, Sort sort) {
+    public Page<Category> listByCondition(CategoryCondition categoryCondition) {
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"modifyTime");
+        Sort sort = new Sort(order);
         Specification<Category> specification = new Specification<Category>() {
             @Override
             public Predicate toPredicate(Root<Category> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 List<Predicate> predicates = new ArrayList<Predicate>();
                 //参数非空判断。不为空则加此条件
-                if (!categoryCondition.getCategoryName().isEmpty()) {
+                if (!StringUtils.isEmpty(categoryCondition.getCategoryName())) {
                     Predicate _name = criteriaBuilder.like(root.get("categoryName"),"%"+categoryCondition.getCategoryName()+"%");
                     predicates.add(_name);
                 }

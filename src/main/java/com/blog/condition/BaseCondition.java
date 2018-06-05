@@ -5,9 +5,9 @@ package com.blog.condition;
  */
 public class BaseCondition {
 
-    private final Integer currPage = 0;
+    private  Integer currPage ;
 
-    private final Integer pageSize = 10;
+    private  Integer pageSize ;
 
     public Integer getCurrPage() {
         return currPage;
@@ -15,5 +15,13 @@ public class BaseCondition {
 
     public Integer getPageSize() {
         return pageSize;
+    }
+
+    public void setCurrPage(Integer currPage) {
+        this.currPage = currPage;
+    }
+
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 }

@@ -16,6 +16,6 @@ public interface CategoryService {
      * @param sort
      * @return
      */
-    Page<Category> listByCondition(CategoryCondition categoryCondition, Sort sort);
+    Page<Category> listByCondition(CategoryCondition categoryCondition);
 
 }

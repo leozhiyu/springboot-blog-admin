@@ -24,6 +24,7 @@ public class ExceptionHandle {
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
     public Result handle(Exception e) {
+        e.printStackTrace();
         LOGGER.error("【系统异常】 {}", e.getMessage());
         return ResultUtil.error(e.getMessage());
     }
