@@ -20,7 +20,7 @@ public class Category {
     private String categoryName;
 
     @Column(columnDefinition = "int default 0 COMMENT '类目权值'")
-    private String categoryWeight;
+    private Integer categoryWeight;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
@@ -49,11 +49,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public String getCategoryWeight() {
+    public Integer getCategoryWeight() {
         return categoryWeight;
     }
 
-    public void setCategoryWeight(String categoryWeight) {
+    public void setCategoryWeight(Integer categoryWeight) {
         this.categoryWeight = categoryWeight;
     }
 

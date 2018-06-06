@@ -9,6 +9,12 @@ import com.blog.domain.Result;
 import com.blog.enums.ResultEnum;
 
 public class ResultUtil {
+
+
+    public static Result success() {
+        return new Result(ResultEnum.SUCCESS.getCode(), ResultEnum.SUCCESS.getMsg(), ResultEnum.SUCCESS.getMsg());
+    }
+
     /**
      * 使用默认给出的成功响应，只需要填充数据即可
      * @param object

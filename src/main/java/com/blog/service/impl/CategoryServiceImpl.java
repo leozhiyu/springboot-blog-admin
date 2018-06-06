@@ -28,8 +28,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> listByCondition(CategoryCondition categoryCondition) {
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"modifyTime");
-        Sort sort = new Sort(order);
+        Sort.Order modifyTimeOrder = new Sort.Order(Sort.Direction.DESC,"modifyTime");
+        Sort.Order categoryWeightOrder = new Sort.Order(Sort.Direction.DESC,"categoryWeight");
+        ArrayList<Sort.Order> orderList = new ArrayList();
+        orderList.add(categoryWeightOrder);
+        orderList.add(modifyTimeOrder);
+        Sort sort = new Sort(orderList);
         Specification<Category> specification = new Specification<Category>() {
             @Override
             public Predicate toPredicate(Root<Category> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
@@ -44,5 +48,20 @@ public class CategoryServiceImpl implements CategoryService {
         };
         Pageable pageable = new PageRequest(categoryCondition.getCurrPage(), categoryCondition.getPageSize(),sort);
         return categoryRepository.findAll(specification,pageable);
+    }
+
+    @Override
+    public void save(Category category) {
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public Category getById(Long id) {
+        return categoryRepository.findOne(id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        categoryRepository.delete(id);
     }
 }
