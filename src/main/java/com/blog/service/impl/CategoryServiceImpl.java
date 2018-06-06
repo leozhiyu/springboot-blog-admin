@@ -28,26 +28,23 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Page<Category> listByCondition(CategoryCondition categoryCondition) {
-        Sort.Order modifyTimeOrder = new Sort.Order(Sort.Direction.DESC,"modifyTime");
-        Sort.Order categoryWeightOrder = new Sort.Order(Sort.Direction.DESC,"categoryWeight");
+        Sort.Order modifyTimeOrder = new Sort.Order(Sort.Direction.DESC, "modifyTime");
+        Sort.Order categoryWeightOrder = new Sort.Order(Sort.Direction.DESC, "categoryWeight");
         ArrayList<Sort.Order> orderList = new ArrayList();
         orderList.add(categoryWeightOrder);
         orderList.add(modifyTimeOrder);
         Sort sort = new Sort(orderList);
-        Specification<Category> specification = new Specification<Category>() {
-            @Override
-            public Predicate toPredicate(Root<Category> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                List<Predicate> predicates = new ArrayList<Predicate>();
-                //参数非空判断。不为空则加此条件
-                if (!StringUtils.isEmpty(categoryCondition.getCategoryName())) {
-                    Predicate _name = criteriaBuilder.like(root.get("categoryName"),"%"+categoryCondition.getCategoryName()+"%");
-                    predicates.add(_name);
-                }
-                return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
+        Specification<Category> specification = ((root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<Predicate>();
+            //参数非空判断。不为空则加此条件
+            if (!StringUtils.isEmpty(categoryCondition.getCategoryName())) {
+                Predicate _name = criteriaBuilder.like(root.get("categoryName"), "%" + categoryCondition.getCategoryName() + "%");
+                predicates.add(_name);
             }
-        };
-        Pageable pageable = new PageRequest(categoryCondition.getCurrPage(), categoryCondition.getPageSize(),sort);
-        return categoryRepository.findAll(specification,pageable);
+            return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
+        });
+        Pageable pageable = new PageRequest(categoryCondition.getCurrPage(), categoryCondition.getPageSize(), sort);
+        return categoryRepository.findAll(specification, pageable);
     }
 
     @Override
