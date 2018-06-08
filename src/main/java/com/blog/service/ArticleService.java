@@ -1,40 +1,38 @@
 package com.blog.service;
 
-import com.blog.condition.CategoryCondition;
+import com.blog.condition.ArticleCondition;
 import com.blog.condition.TagCondition;
-import com.blog.domain.Category;
+import com.blog.domain.Article;
 import com.blog.domain.Tag;
 import org.springframework.data.domain.Page;
 
-import java.util.List;
-
 /**
  * @author: yukong
- * @date: 2018/6/6 15:25
+ * @date: 2018/6/7 10:14
  * @description:
  */
-public interface TagService {
-
+public interface ArticleService {
 
     /**
      * 分页查询
-     * @param tagCondition
+     * @param articleCondition
      * @return
      */
-    Page<Tag> listByCondition(TagCondition tagCondition);
+    Page<Article> listByCondition(ArticleCondition articleCondition);
 
 
     /**
      * 添加标签
-     * @param tag
+     * @param article
      */
-    void save (Tag tag);
+    void save (Article article);
 
     /**
      * 主键查询
      * @param id
+     * @return
      */
-    Tag getById(Long id);
+    Article getById(Long id);
 
     /**
      * 主键删除
@@ -42,10 +40,4 @@ public interface TagService {
      */
     void deleteById(Long id);
 
-
-    /**
-     * 查询所有标签
-     * @return
-     */
-    List<Tag> findAll();
 }

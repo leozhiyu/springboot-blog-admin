@@ -45,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user")
                 .permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/login")
+                .antMatchers(HttpMethod.GET, "/index/**")
                 .permitAll()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .anyRequest()

@@ -3,10 +3,12 @@ package com.blog.service;
 
 import com.blog.condition.CategoryCondition;
 import com.blog.domain.Category;
+import com.blog.dto.CategoryDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CategoryService {
 
@@ -33,5 +35,11 @@ public interface CategoryService {
      * @param id
      */
     void deleteById(Long id);
+
+    /**
+     * 查询所有分类
+     * @return
+     */
+    List<CategoryDTO> findAll();
 
 }
