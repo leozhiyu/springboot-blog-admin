@@ -2,10 +2,15 @@ package com.blog.service.impl;
 
 import com.blog.condition.ArticleCondition;
 import com.blog.domain.Article;
+import com.blog.domain.Category;
 import com.blog.domain.Tag;
+import com.blog.dto.ArticleDTO;
 import com.blog.enums.ArticleStatusEnum;
 import com.blog.responsitory.ArticleRepository;
+import com.blog.responsitory.CategoryRepository;
+import com.blog.responsitory.TagRepository;
 import com.blog.service.ArticleService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,9 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author: yukong
@@ -30,6 +33,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private TagRepository tagRepository;
 
     @Override
     public Page<Article> listByCondition(ArticleCondition articleCondition) {
@@ -49,12 +56,20 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void save(Article article) {
-        if (article.getId() != null && ArticleStatusEnum.PUBLISH.getCode().equals(article.getArticleStatus())){
+    public void save(ArticleDTO articleDTO) {
+        if (articleDTO.getId() != null && ArticleStatusEnum.PUBLISH.getCode().equals(articleDTO.getArticleStatus())){
 
         } else {
-            article.setPublishTime(new Date());
+            articleDTO.setPublishTime(new Date());
         }
+        Article article = new Article();
+        BeanUtils.copyProperties(articleDTO,article);
+        Set<Tag> tags = new HashSet<>();
+        articleDTO.getTagIds().forEach(e->{
+            tags.add(tagRepository.findOne(e));
+        });
+        article.setCategory(categoryRepository.findOne(articleDTO.getCategoryId()));
+        article.setTags(tags);
         articleRepository.save(article);
     }
 

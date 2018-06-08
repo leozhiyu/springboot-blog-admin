@@ -81,7 +81,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> findAll() {
 
         Query query = emf.createEntityManager().createNativeQuery(
-                "SELECT tb.*,( SELECT count( * ) count FROM  tb_article ta WHERE  ta.category_list = tb.id )  count FROM tb_category tb");
+                "SELECT tb.*,( SELECT count( * ) count FROM  tb_article ta WHERE  ta.category_id = tb.id )  count FROM tb_category tb");
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<CategoryDTO> dtos = BeanUtil.transMap2Bean(rows,CategoryDTO.class);

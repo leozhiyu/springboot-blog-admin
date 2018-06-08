@@ -4,6 +4,7 @@ import com.blog.condition.ArticleCondition;
 import com.blog.condition.TagCondition;
 import com.blog.domain.Article;
 import com.blog.domain.Tag;
+import com.blog.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 
 /**
@@ -25,7 +26,7 @@ public interface ArticleService {
      * 添加标签
      * @param article
      */
-    void save (Article article);
+    void save (ArticleDTO article);
 
     /**
      * 主键查询

@@ -5,6 +5,7 @@ import com.blog.condition.TagCondition;
 import com.blog.domain.Article;
 import com.blog.domain.Result;
 import com.blog.domain.Tag;
+import com.blog.dto.ArticleDTO;
 import com.blog.service.ArticleService;
 import com.blog.service.TagService;
 import com.blog.util.ResultUtil;
@@ -25,8 +26,8 @@ public class ArticleController {
     }
 
     @PostMapping
-    private Result<Article> add(@RequestBody Article tag){
-        this.articleService.save(tag);
+    private Result<Article> add(@RequestBody ArticleDTO articleDTO){
+        this.articleService.save(articleDTO);
         return ResultUtil.success();
     }
 
@@ -36,7 +37,7 @@ public class ArticleController {
     }
 
     @PutMapping
-    private Result<Article> update(@RequestBody Article tag) {
+    private Result<Article> update(@RequestBody ArticleDTO tag) {
         articleService.save(tag);
         return ResultUtil.success(tag);
     }

@@ -1,9 +1,6 @@
 package com.blog.util;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
+
 import java.lang.reflect.Modifier;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -18,6 +15,9 @@ import java.util.regex.Pattern;
  * @description:
  */
 public class BeanUtil {
+
+    private static final String INTEGER = "java.lang.Integer";
+    private static final String LONG = "java.lang.Long";
 
     /**
      * List<Map>转List<bean>
@@ -65,11 +65,11 @@ public class BeanUtil {
                 Object value = map.get(camel2Underline(field.getName()).toLowerCase());
                 if (value instanceof BigInteger) {
                     String fieldType = field.getGenericType().getTypeName();
-                    if("java.lang.Long".equals(fieldType)) {
+                    if(LONG.equals(fieldType)) {
                         Long val = ((BigInteger) value).longValue();
                         field.set(obj, val);
                     }
-                    if("java.lang.Integer".equals(fieldType)){
+                    if(INTEGER.equals(fieldType)){
                         Integer val = ((BigInteger) value).intValue();
                         field.set(obj, val);
                     }
@@ -131,11 +131,5 @@ public class BeanUtil {
             sb.append(matcher.end()==line.length()?"":"_");
         }
         return sb.toString();
-    }
-    public static void main(String[] args) {
-        String line="I_HAVE_AN_IPANG3_PIG";
-        String camel=underline2Camel(line,true);
-        System.out.println(camel);
-        System.out.println(camel2Underline(camel));
     }
 }

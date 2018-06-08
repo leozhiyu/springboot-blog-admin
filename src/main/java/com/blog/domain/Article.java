@@ -6,6 +6,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author: yukong
@@ -51,13 +52,16 @@ public class Article {
     @Column(columnDefinition = "datetime COMMENT '发布时间'")
     private Date publishTime;
 
-    @NotNull(message = "所属类别不能为空")
-    @Column(columnDefinition = "varchar(50) COMMENT '所属类别'")
-    private String categoryList;
 
-    @NotNull(message = "所属标签不能为空")
-    @Column(columnDefinition = "varchar(50) COMMENT '所属标签'")
-    private String tagList;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "article_tag", joinColumns = {
+            @JoinColumn(name = "article_id", referencedColumnName = "id")}, inverseJoinColumns = {
+            @JoinColumn(name = "tag_id", referencedColumnName = "id")})
+    private Set<Tag> tags;
+
+    @OneToOne(cascade={CascadeType.ALL})
+    @JoinColumn(name="category_id")
+    private Category category;
 
     public Long getId() {
         return id;
@@ -115,19 +119,21 @@ public class Article {
         this.publishTime = publishTime;
     }
 
-    public String getCategoryList() {
-        return categoryList;
+
+
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryList(String categoryList) {
-        this.categoryList = categoryList;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
-    public String getTagList() {
-        return tagList;
+    public Set<Tag> getTags() {
+        return tags;
     }
 
-    public void setTagList(String tagList) {
-        this.tagList = tagList;
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
     }
 }

@@ -1,11 +1,13 @@
 package com.blog.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * @author: yukong
@@ -38,6 +40,17 @@ public class Tag {
     @Column(columnDefinition = "datetime COMMENT '修改时间'")
     private Date modifyTime;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "tags")
+    private Set<Article> articles;
+
+    public Set<Article> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(Set<Article> articles) {
+        this.articles = articles;
+    }
 
     public Long getId() {
         return id;
