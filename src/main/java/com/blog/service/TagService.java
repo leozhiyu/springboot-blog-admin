@@ -4,6 +4,7 @@ import com.blog.condition.CategoryCondition;
 import com.blog.condition.TagCondition;
 import com.blog.domain.Category;
 import com.blog.domain.Tag;
+import com.blog.dto.TagDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -48,4 +49,10 @@ public interface TagService {
      * @return
      */
     List<Tag> findAll();
+
+    /**
+     * 查询所有标签以及每个标签文章的数量
+     * @return
+     */
+    List<TagDTO> findAllAndCount();
 }

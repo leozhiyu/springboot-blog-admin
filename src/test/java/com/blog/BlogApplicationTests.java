@@ -11,6 +11,11 @@ public class BlogApplicationTests {
 
 	@Test
 	public void contextLoads() {
+		System.out.println();
 	}
 
+	public static void main(String[] args) {
+
+		System.out.println(1 +'A');
+	}
 }

@@ -4,8 +4,13 @@ import com.blog.condition.ArticleCondition;
 import com.blog.condition.TagCondition;
 import com.blog.domain.Article;
 import com.blog.domain.Tag;
+import com.blog.dto.ArchiveDTO;
 import com.blog.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author: yukong
@@ -40,5 +45,18 @@ public interface ArticleService {
      * @param id
      */
     void deleteById(Long id);
+
+
+    /**
+     * 归档查询
+     * @return
+     */
+    List<ArchiveDTO> archive();
+
+    /**
+     * 根据年份分组查询
+     * @return
+     */
+    Map<String,List<Article>> findAllGroupByYear();
 
 }

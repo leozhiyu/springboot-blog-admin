@@ -5,14 +5,20 @@
  */
 package com.blog.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 public class Result<T> {
     /**响应码*/
+    @JsonView(Article.ArticleYearView.class)
     private Integer code;
 
     /**响应提示*/
+    @JsonView(Article.ArticleYearView.class)
+
     private String msg;
 
     /**返回的数据*/
+    @JsonView(Article.ArticleYearView.class)
     private T data;
 
     public Result(Integer code, String msg, T data) {

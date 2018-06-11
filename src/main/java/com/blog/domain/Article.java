@@ -1,10 +1,12 @@
 package com.blog.domain;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,14 +20,18 @@ import java.util.Set;
 @Table(name = "tb_article")
 public class Article {
 
+    public interface ArticleYearView{}
+
 
     @Id
     @GeneratedValue
     @Column(columnDefinition = "bigint COMMENT '主键id'")
+    @JsonView(Article.ArticleYearView.class)
     private Long id ;
 
     @Column(columnDefinition = "varchar(30) COMMENT '文章标题'")
     @NotNull(message = "文章标题不能为空")
+    @JsonView(Article.ArticleYearView.class)
     private String articleTitle;
 
     @Lob
@@ -50,6 +56,7 @@ public class Article {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "datetime COMMENT '发布时间'")
+    @JsonView(Article.ArticleYearView.class)
     private Date publishTime;
 
 
@@ -135,5 +142,10 @@ public class Article {
 
     public void setTags(Set<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String groupByYear(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
+        return simpleDateFormat.format(this.getPublishTime());
     }
 }

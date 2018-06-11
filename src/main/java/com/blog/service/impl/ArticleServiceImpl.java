@@ -4,12 +4,17 @@ import com.blog.condition.ArticleCondition;
 import com.blog.domain.Article;
 import com.blog.domain.Category;
 import com.blog.domain.Tag;
+import com.blog.dto.ArchiveDTO;
 import com.blog.dto.ArticleDTO;
+import com.blog.dto.CategoryDTO;
 import com.blog.enums.ArticleStatusEnum;
 import com.blog.responsitory.ArticleRepository;
 import com.blog.responsitory.CategoryRepository;
 import com.blog.responsitory.TagRepository;
 import com.blog.service.ArticleService;
+import com.blog.util.BeanUtil;
+import org.hibernate.SQLQuery;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,8 +25,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
+import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author: yukong
@@ -37,6 +46,13 @@ public class ArticleServiceImpl implements ArticleService {
     private CategoryRepository categoryRepository;
     @Autowired
     private TagRepository tagRepository;
+
+    private EntityManagerFactory emf;
+
+    @PersistenceUnit
+    public void setEntityManagerFactory(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
 
     @Override
     public Page<Article> listByCondition(ArticleCondition articleCondition) {
@@ -81,5 +97,31 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public void deleteById(Long id) {
         articleRepository.delete(id);
+    }
+
+    @Override
+    public List<ArchiveDTO> archive() {
+        Query query = emf.createEntityManager().createNativeQuery(
+                "SELECT " +
+                        " DATE_FORMAT( publish_time, '%m-%Y' ) date_str," +
+                        " count( * ) count " +
+                        " FROM" +
+                        " tb_article " +
+                        " GROUP BY " +
+                        " DATE_FORMAT( publish_time, '%m-%Y' ) " +
+                        " order by publish_time desc") ;
+        query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<Map<String,Object>> rows = query.getResultList();
+        List<ArchiveDTO> dtos = BeanUtil.transMap2Bean(rows,ArchiveDTO.class);
+        return dtos;
+    }
+
+    @Override
+    public Map<String, List<Article>> findAllGroupByYear() {
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"publishTime");
+        Sort sort = new Sort(order);
+        List<Article> articles = articleRepository.findAll(sort);
+        Map<String, List<Article>> group  = articles.stream().collect(Collectors.groupingBy(Article::groupByYear));
+        return group;
     }
 }
