@@ -34,6 +34,7 @@ public class MyUserDetailServiceImpl implements UserDetailsService {
         if ( user == null ) {
             throw new UsernameNotFoundException("用户不存在");
         }
+        // authorityString：spring security的角色，系统没有角色，使用 admin
         return new User(username,
                 user.getUserPwd(), true, true,
                 true, true,
