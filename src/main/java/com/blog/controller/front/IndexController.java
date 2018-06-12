@@ -1,9 +1,8 @@
 package com.blog.controller.front;
 
 import com.blog.condition.ArticleCondition;
-import com.blog.condition.CategoryCondition;
 import com.blog.domain.Article;
-import com.blog.domain.Category;
+import com.blog.domain.Notice;
 import com.blog.domain.Result;
 import com.blog.domain.Tag;
 import com.blog.dto.ArchiveDTO;
@@ -11,6 +10,7 @@ import com.blog.dto.CategoryDTO;
 import com.blog.dto.TagDTO;
 import com.blog.service.ArticleService;
 import com.blog.service.CategoryService;
+import com.blog.service.NoticeService;
 import com.blog.service.TagService;
 import com.blog.util.ResultUtil;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -18,7 +18,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
@@ -40,6 +39,8 @@ public class IndexController {
     private TagService tagService;
     @Autowired
     private ArticleService articleService;
+    @Autowired
+    private NoticeService noticeService;
 
     @GetMapping("/archive/category")
         Result<List<CategoryDTO>> findAllCategory(){
@@ -78,10 +79,17 @@ public class IndexController {
         return ResultUtil.success(articleService.findAllGroupByYear());
     }
 
+
     @GetMapping("/archive/{year}/{month}")
     @JsonView(Article.ArticleYearView.class)
-    private  Result<LinkedHashMap<Integer,List<Article>>> findByYearAndMonth(@PathVariable("year") Integer year,@PathVariable("month") Integer month){
-        return ResultUtil.success(articleService.findByYearAndMonth(year,month));
+    private  Result<LinkedHashMap<Integer,List<Article>>> findByYearAndMonth(@PathVariable("year") Integer year,@PathVariable("month") Integer month) {
+        return ResultUtil.success(articleService.findByYearAndMonth(year, month));
+    }
+
+    @GetMapping("/notice")
+    private Result<Notice> findNotice() {
+        return ResultUtil.success(noticeService.getLatest());
+
     }
 
 }

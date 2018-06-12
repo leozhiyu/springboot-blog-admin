@@ -1,9 +1,7 @@
 package com.blog.service.impl;
 
 import com.blog.condition.TagCondition;
-import com.blog.domain.Category;
 import com.blog.domain.Tag;
-import com.blog.dto.CategoryDTO;
 import com.blog.dto.TagDTO;
 import com.blog.responsitory.TagRepository;
 import com.blog.service.TagService;
@@ -22,10 +20,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
