@@ -42,4 +42,12 @@ public interface CategoryService {
      */
     List<CategoryDTO> findAll();
 
+
+    /**
+     * 分类条件查询 不分页
+     * @param categoryCondition
+     * @return
+     */
+    List<CategoryDTO> findByCondition(CategoryCondition categoryCondition);
+
 }

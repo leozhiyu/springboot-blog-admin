@@ -60,6 +60,8 @@ public interface ArticleService {
      */
     LinkedHashMap<Integer,List<Article>> findAllGroupByYear();
 
+
+
     /**
      * 根据年月查询
      * @param year
@@ -67,4 +69,17 @@ public interface ArticleService {
      * @return
      */
     LinkedHashMap<Integer,List<Article>> findByYearAndMonth(Integer year,Integer month);
+
+
+    /**
+     * 根据类目分组
+     * @return
+     */
+    Map<String,List<Article>> findArticleGroupByCategory();
+
+    /**
+     * 根据类目名称分组
+     * @return
+     */
+    Map<String,List<Article>> findArticleGroupByCategory(String categoryName);
 }

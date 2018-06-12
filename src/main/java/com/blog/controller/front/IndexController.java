@@ -1,6 +1,7 @@
 package com.blog.controller.front;
 
 import com.blog.condition.ArticleCondition;
+import com.blog.condition.CategoryCondition;
 import com.blog.domain.Article;
 import com.blog.domain.Notice;
 import com.blog.domain.Result;
@@ -47,6 +48,13 @@ public class IndexController {
         return ResultUtil.success(categoryService.findAll());
     }
 
+    @GetMapping("/archive/category/{name}")
+    Result<List<CategoryDTO>> findAllCategoryByName(@PathVariable String name){
+        CategoryCondition categoryCondition = new CategoryCondition();
+        categoryCondition.setCategoryName(name);
+        return ResultUtil.success(categoryService.findByCondition(categoryCondition));
+    }
+
     @GetMapping("/tag")
     Result<List<Tag>> findAllTag() {
         return ResultUtil.success(tagService.findAll());
@@ -89,7 +97,18 @@ public class IndexController {
     @GetMapping("/notice")
     private Result<Notice> findNotice() {
         return ResultUtil.success(noticeService.getLatest());
+    }
 
+    @GetMapping("/article/category")
+    @JsonView(Article.ArticleYearView.class)
+    private Result<Map<Integer,List<Article>>> findArticleGroupByCategory(){
+        return ResultUtil.success(articleService.findArticleGroupByCategory());
+    }
+
+    @GetMapping("/article/category/{name}")
+    @JsonView(Article.ArticleYearView.class)
+    private Result<Map<Integer,List<Article>>> findArticleGroupByCategoryName(@PathVariable String name){
+        return ResultUtil.success(articleService.findArticleGroupByCategory(name));
     }
 
 }

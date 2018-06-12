@@ -12,4 +12,6 @@ import java.util.Map;
 
 public interface CategoryRepository extends JpaRepository<Category,Long>,JpaSpecificationExecutor<Category>{
 
+    Category findCategoryByCategoryName(String categoryName);
+
 }

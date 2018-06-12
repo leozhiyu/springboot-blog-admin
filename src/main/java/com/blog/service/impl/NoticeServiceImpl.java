@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
@@ -36,6 +37,11 @@ public class NoticeServiceImpl implements NoticeService {
     private NoticeRepository noticeRepository;
 
     private EntityManagerFactory emf;
+
+    @PersistenceUnit
+    public void setEntityManagerFactory(EntityManagerFactory emf) {
+        this.emf = emf;
+    }
 
     @Override
     public Page<Notice> listByCondition(NoticeCondition noticeCondition) {
@@ -89,6 +95,7 @@ public class NoticeServiceImpl implements NoticeService {
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<Notice> dtos = BeanUtil.transMap2Bean(rows,Notice.class);
+        emf.close();
         return dtos.get(0);
     }
 }

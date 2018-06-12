@@ -66,7 +66,7 @@ public class Article {
             @JoinColumn(name = "tag_id", referencedColumnName = "id")})
     private Set<Tag> tags;
 
-    @OneToOne(cascade={CascadeType.ALL})
+    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
     @JoinColumn(name="category_id")
     private Category category;
 
@@ -147,5 +147,9 @@ public class Article {
     public Integer groupByYear(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
         return Integer.valueOf(simpleDateFormat.format(this.getPublishTime()));
+    }
+
+    public String groupByCategory(){
+       return category.getCategoryName();
     }
 }

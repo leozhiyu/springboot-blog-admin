@@ -1,11 +1,14 @@
 package com.blog.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
@@ -32,6 +35,18 @@ public class Category {
     @Column(columnDefinition = "datetime COMMENT '修改时间'")
     private Date modifyTime;
 
+    @JsonIgnore
+    @OneToMany(cascade = { CascadeType.PERSIST }, fetch = FetchType.EAGER, mappedBy = "category")
+    // fetch是否延迟加载，mappedBy有它的一方为关系被维护端。
+    private Set<Article> items = new HashSet<Article>();
+
+    public Set<Article> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Article> items) {
+        this.items = items;
+    }
 
     public Long getId() {
         return id;

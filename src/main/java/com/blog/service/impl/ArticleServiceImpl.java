@@ -148,6 +148,26 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = BeanUtil.transMap2Bean(rows, Article.class);
         LinkedHashMap<Integer, List<Article>> group = new LinkedHashMap<>();
         group.put(year,articles);
+        emf.close();
+        return group;
+    }
+
+    @Override
+    public Map<String, List<Article>> findArticleGroupByCategory() {
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "publishTime");
+        Sort sort = new Sort(order);
+        List<Article> articles = articleRepository.findAll(sort);
+        Map<String, List<Article>> group = articles.stream()
+                .collect(Collectors.groupingBy(Article::groupByCategory));
+        return group;
+    }
+
+    @Override
+    public Map<String, List<Article>> findArticleGroupByCategory(String categoryName) {
+        Category category = categoryRepository.findCategoryByCategoryName(categoryName);
+        List<Article> articles = articleRepository.findByCategoryOrderByPublishTime(category);
+        Map<String, List<Article>> group = articles.stream()
+                .collect(Collectors.groupingBy(Article::groupByCategory));
         return group;
     }
 }

@@ -6,6 +6,7 @@ import com.blog.dto.CategoryDTO;
 import com.blog.responsitory.CategoryRepository;
 import com.blog.service.CategoryService;
 import com.blog.util.BeanUtil;
+import com.blog.vo.CategoryVO;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,19 @@ public class CategoryServiceImpl implements CategoryService {
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<CategoryDTO> dtos = BeanUtil.transMap2Bean(rows,CategoryDTO.class);
+        emf.close();
+        return dtos;
+    }
+
+    @Override
+    public List<CategoryDTO> findByCondition(CategoryCondition categoryCondition) {
+        Query query = emf.createEntityManager().createNativeQuery(
+                "SELECT tb.*,( SELECT count( * ) count FROM  tb_article ta WHERE  ta.category_id = tb.id )  " +
+                        "count FROM tb_category tb where tb.category_name=?").setParameter(1,categoryCondition.getCategoryName());
+        query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<Map<String,Object>> rows = query.getResultList();
+        List<CategoryDTO> dtos = BeanUtil.transMap2Bean(rows,CategoryDTO.class);
+        emf.close();
         return dtos;
     }
 }

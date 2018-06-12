@@ -6,6 +6,12 @@ spring:
     url: jdbc:mysql://115.159.219.176:3306/blog?characterEncoding=UTF-8 #设置数据库，不设置UTF-8会导致中文注释出现乱码
     username: root
     password: abc123
+    min-evictable-idle-time-millis: 1800000
+    initial-size: 5
+    max-active: 50
+    max-wait: 60000
+    min-idle: 5
+    pool-name: SpringBootHikariCP
   jpa: # 添加jpa支持
     hibernate:
       ddl-auto: update #update方式避免清空数据

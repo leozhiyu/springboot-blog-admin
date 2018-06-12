@@ -103,6 +103,7 @@ public class TagServiceImpl implements TagService {
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<TagDTO> dtos = BeanUtil.transMap2Bean(rows,TagDTO.class);
+        emf.close();
         return dtos;
     }
 
