@@ -9,16 +9,16 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 public class Result<T> {
     /**响应码*/
-    @JsonView(Article.ArticleYearView.class)
+    @JsonView(Article.SimpleArticleView.class)
     private Integer code;
 
     /**响应提示*/
-    @JsonView(Article.ArticleYearView.class)
+    @JsonView(Article.SimpleArticleView.class)
 
     private String msg;
 
     /**返回的数据*/
-    @JsonView(Article.ArticleYearView.class)
+    @JsonView(Article.SimpleArticleView.class)
     private T data;
 
     public Result(Integer code, String msg, T data) {

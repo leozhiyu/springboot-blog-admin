@@ -1,6 +1,7 @@
 package com.blog.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -28,6 +29,7 @@ public class Tag {
 
     @Column(columnDefinition = "varchar(30) COMMENT '类目名称'", unique = true)
     @NotNull(message = "标签名不能为空")
+    @JsonView(Article.SimpleArticleView.class)
     private String tagName;
 
     @Temporal(TemporalType.TIMESTAMP)

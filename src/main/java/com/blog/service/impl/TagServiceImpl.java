@@ -17,6 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
@@ -82,7 +83,8 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public List<TagDTO> findAllAndCount() {
-        Query query = emf.createEntityManager().createNativeQuery(
+        EntityManager manager = emf.createEntityManager();
+        Query query = manager.createNativeQuery(
                 " SELECT " +
                             "a.*, " +
                             "b.*  " +
@@ -103,7 +105,7 @@ public class TagServiceImpl implements TagService {
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<TagDTO> dtos = BeanUtil.transMap2Bean(rows,TagDTO.class);
-        emf.close();
+        manager.close();
         return dtos;
     }
 

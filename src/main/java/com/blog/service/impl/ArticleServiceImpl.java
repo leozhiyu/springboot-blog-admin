@@ -25,6 +25,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
@@ -101,7 +102,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArchiveDTO> archive() {
-        Query query = emf.createEntityManager().createNativeQuery(
+        EntityManager manager =  emf.createEntityManager();
+        Query query = manager.createNativeQuery(
                 "SELECT " +
                         " DATE_FORMAT( publish_time, '%m-%Y' ) date_str," +
                         " count( * ) count " +
@@ -113,6 +115,7 @@ public class ArticleServiceImpl implements ArticleService {
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String, Object>> rows = query.getResultList();
         List<ArchiveDTO> dtos = BeanUtil.transMap2Bean(rows, ArchiveDTO.class);
+        manager.close();
         return dtos;
     }
 
@@ -133,7 +136,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public  LinkedHashMap<Integer,List<Article>> findByYearAndMonth(Integer year, Integer month) {
-        Query query = emf.createEntityManager().createNativeQuery("SELECT " +
+        EntityManager manager =  emf.createEntityManager();
+        Query query =manager.createNativeQuery("SELECT " +
                 " *  " +
                 "FROM " +
                 " tb_article  " +
@@ -148,7 +152,7 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = BeanUtil.transMap2Bean(rows, Article.class);
         LinkedHashMap<Integer, List<Article>> group = new LinkedHashMap<>();
         group.put(year,articles);
-        emf.close();
+        manager.close();
         return group;
     }
 
@@ -168,6 +172,26 @@ public class ArticleServiceImpl implements ArticleService {
         List<Article> articles = articleRepository.findByCategoryOrderByPublishTime(category);
         Map<String, List<Article>> group = articles.stream()
                 .collect(Collectors.groupingBy(Article::groupByCategory));
+        return group;
+    }
+
+    @Override
+    public Map<String, Set<Article>> findArticleGroupByTag() {
+        List<Tag> tags = tagRepository.findAll();
+        Map<String, Set<Article>> group = new HashMap<>();
+        tags.forEach(e ->{
+            group.put(e.getTagName(),e.getArticles());
+        });
+        return group;
+    }
+
+    @Override
+    public Map<String, Set<Article>> findArticleGroupByTag(String tagName) {
+        List<Tag> tags = tagRepository.findTagsByTagNameEquals(tagName);
+        Map<String, Set<Article>> group = new HashMap<>();
+        tags.forEach(e ->{
+            group.put(e.getTagName(),e.getArticles());
+        });
         return group;
     }
 }

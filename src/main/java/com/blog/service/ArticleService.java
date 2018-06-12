@@ -8,10 +8,7 @@ import com.blog.dto.ArchiveDTO;
 import com.blog.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author: yukong
@@ -22,6 +19,7 @@ public interface ArticleService {
 
     /**
      * 分页查询
+     *
      * @param articleCondition
      * @return
      */
@@ -30,12 +28,14 @@ public interface ArticleService {
 
     /**
      * 添加标签
+     *
      * @param article
      */
-    void save (ArticleDTO article);
+    void save(ArticleDTO article);
 
     /**
      * 主键查询
+     *
      * @param id
      * @return
      */
@@ -43,6 +43,7 @@ public interface ArticleService {
 
     /**
      * 主键删除
+     *
      * @param id
      */
     void deleteById(Long id);
@@ -50,36 +51,58 @@ public interface ArticleService {
 
     /**
      * 归档查询
+     *
      * @return
      */
     List<ArchiveDTO> archive();
 
     /**
      * 根据年份分组查询
+     *
      * @return
      */
-    LinkedHashMap<Integer,List<Article>> findAllGroupByYear();
-
+    LinkedHashMap<Integer, List<Article>> findAllGroupByYear();
 
 
     /**
      * 根据年月查询
+     *
      * @param year
      * @param month
      * @return
      */
-    LinkedHashMap<Integer,List<Article>> findByYearAndMonth(Integer year,Integer month);
+    LinkedHashMap<Integer, List<Article>> findByYearAndMonth(Integer year, Integer month);
 
-
-    /**
-     * 根据类目分组
-     * @return
-     */
-    Map<String,List<Article>> findArticleGroupByCategory();
 
     /**
      * 根据类目名称分组
+     *
      * @return
      */
-    Map<String,List<Article>> findArticleGroupByCategory(String categoryName);
+    Map<String, List<Article>> findArticleGroupByCategory();
+
+    /**
+     * 根据类目名称分组
+     *
+     * @param categoryName 分组条件
+     * @return
+     */
+    Map<String, List<Article>> findArticleGroupByCategory(String categoryName);
+
+    /**
+     * 根据标签名称分组
+     *
+     * @return
+     */
+    Map<String, Set<Article>> findArticleGroupByTag();
+
+    /**
+     * 根据标签名称分组
+     *
+     * @param tagName 分组条件
+     * @return
+     */
+    Map<String, Set<Article>> findArticleGroupByTag(String tagName);
 }
+
+

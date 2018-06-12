@@ -22,6 +22,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.Query;
@@ -77,25 +78,28 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<NoticeDTO> findAll() {
-        Query query = emf.createEntityManager().createNativeQuery(
+        EntityManager manager = emf.createEntityManager();
+        Query query = manager.createNativeQuery(
                 "select id, notice_title, notice_content, creat_time, modify_time from tb_notice ORDER  by creat_time");
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<NoticeDTO> dtos = BeanUtil.transMap2Bean(rows,NoticeDTO.class);
+        manager.close();
         return dtos;
     }
 
     @Override
     public Notice getLatest() {
         // todo 如何查第一条数据
-         Query query = emf.createEntityManager().createNativeQuery(
+        EntityManager manager = emf.createEntityManager();
+        Query query = manager.createNativeQuery(
                 "select id, notice_title, notice_content, creat_time, modify_time " +
                 " from tb_notice ORDER  by creat_time " +
                         "limit 1");
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<Notice> dtos = BeanUtil.transMap2Bean(rows,Notice.class);
-        emf.close();
+        manager.close();
         return dtos.get(0);
     }
 }

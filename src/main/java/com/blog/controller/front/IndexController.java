@@ -82,14 +82,14 @@ public class IndexController {
     }
 
     @GetMapping("/article/year")
-    @JsonView(Article.ArticleYearView.class)
+    @JsonView(Article.SimpleArticleView.class)
     private Result<LinkedHashMap<Integer,List<Article>>> findAllGroupByYear() throws JsonProcessingException {
         return ResultUtil.success(articleService.findAllGroupByYear());
     }
 
 
     @GetMapping("/archive/{year}/{month}")
-    @JsonView(Article.ArticleYearView.class)
+    @JsonView(Article.SimpleArticleView.class)
     private  Result<LinkedHashMap<Integer,List<Article>>> findByYearAndMonth(@PathVariable("year") Integer year,@PathVariable("month") Integer month) {
         return ResultUtil.success(articleService.findByYearAndMonth(year, month));
     }
@@ -100,15 +100,27 @@ public class IndexController {
     }
 
     @GetMapping("/article/category")
-    @JsonView(Article.ArticleYearView.class)
+    @JsonView(Article.SimpleArticleView.class)
     private Result<Map<Integer,List<Article>>> findArticleGroupByCategory(){
         return ResultUtil.success(articleService.findArticleGroupByCategory());
     }
 
     @GetMapping("/article/category/{name}")
-    @JsonView(Article.ArticleYearView.class)
+    @JsonView(Article.SimpleArticleView.class)
     private Result<Map<Integer,List<Article>>> findArticleGroupByCategoryName(@PathVariable String name){
         return ResultUtil.success(articleService.findArticleGroupByCategory(name));
+    }
+
+    @GetMapping("/article/tag")
+    @JsonView(Article.SimpleArticleView.class)
+    private Result<Map<String,List<Article>>> findArticleGroupByTag(){
+        return ResultUtil.success(articleService.findArticleGroupByTag());
+    }
+
+    @GetMapping("/article/tag/{name}")
+    @JsonView(Article.SimpleArticleView.class)
+    private Result<Map<String,List<Article>>> findArticleGroupByTag(@PathVariable String name){
+        return ResultUtil.success(articleService.findArticleGroupByTag(name));
     }
 
 }
