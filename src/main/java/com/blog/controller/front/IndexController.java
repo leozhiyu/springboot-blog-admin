@@ -14,11 +14,14 @@ import com.blog.service.CategoryService;
 import com.blog.service.TagService;
 import com.blog.util.ResultUtil;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -71,8 +74,14 @@ public class IndexController {
 
     @GetMapping("/article/year")
     @JsonView(Article.ArticleYearView.class)
-    private Result<Map<String,List<Article>>> findAllGroupByYear(){
+    private Result<LinkedHashMap<Integer,List<Article>>> findAllGroupByYear() throws JsonProcessingException {
         return ResultUtil.success(articleService.findAllGroupByYear());
+    }
+
+    @GetMapping("/archive/{year}/{month}")
+    @JsonView(Article.ArticleYearView.class)
+    private  Result<LinkedHashMap<Integer,List<Article>>> findByYearAndMonth(@PathVariable("year") Integer year,@PathVariable("month") Integer month){
+        return ResultUtil.success(articleService.findByYearAndMonth(year,month));
     }
 
 }

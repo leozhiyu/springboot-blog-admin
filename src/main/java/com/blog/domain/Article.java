@@ -144,8 +144,8 @@ public class Article {
         this.tags = tags;
     }
 
-    public String groupByYear(){
+    public Integer groupByYear(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
-        return simpleDateFormat.format(this.getPublishTime());
+        return Integer.valueOf(simpleDateFormat.format(this.getPublishTime()));
     }
 }

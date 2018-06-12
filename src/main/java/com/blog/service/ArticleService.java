@@ -9,6 +9,7 @@ import com.blog.dto.ArticleDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,6 +58,13 @@ public interface ArticleService {
      * 根据年份分组查询
      * @return
      */
-    Map<String,List<Article>> findAllGroupByYear();
+    LinkedHashMap<Integer,List<Article>> findAllGroupByYear();
 
+    /**
+     * 根据年月查询
+     * @param year
+     * @param month
+     * @return
+     */
+    LinkedHashMap<Integer,List<Article>> findByYearAndMonth(Integer year,Integer month);
 }

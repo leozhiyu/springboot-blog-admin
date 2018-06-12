@@ -56,32 +56,32 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<Article> listByCondition(ArticleCondition articleCondition) {
-        Sort.Order modifyTimeOrder = new Sort.Order(Sort.Direction.DESC,"modifyTime");
+        Sort.Order modifyTimeOrder = new Sort.Order(Sort.Direction.DESC, "modifyTime");
         Sort sort = new Sort(modifyTimeOrder);
-        Specification<Article> specification =((root, criteriaQuery, criteriaBuilder) -> {
+        Specification<Article> specification = ((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<Predicate>();
             if (!StringUtils.isEmpty(articleCondition.getArticleTitle())) {
-                Predicate _name = criteriaBuilder.like(root.get("articleTitle"),"%"+articleCondition.getArticleTitle()+"%");
+                Predicate _name = criteriaBuilder.like(root.get("articleTitle"), "%" + articleCondition.getArticleTitle() + "%");
                 predicates.add(_name);
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
         });
 
-        Pageable pageable = new PageRequest(articleCondition.getCurrPage(), articleCondition.getPageSize(),sort);
-        return articleRepository.findAll(specification,pageable);
+        Pageable pageable = new PageRequest(articleCondition.getCurrPage(), articleCondition.getPageSize(), sort);
+        return articleRepository.findAll(specification, pageable);
     }
 
     @Override
     public void save(ArticleDTO articleDTO) {
-        if (articleDTO.getId() != null && ArticleStatusEnum.PUBLISH.getCode().equals(articleDTO.getArticleStatus())){
+        if (articleDTO.getId() != null && ArticleStatusEnum.PUBLISH.getCode().equals(articleDTO.getArticleStatus())) {
 
         } else {
             articleDTO.setPublishTime(new Date());
         }
         Article article = new Article();
-        BeanUtils.copyProperties(articleDTO,article);
+        BeanUtils.copyProperties(articleDTO, article);
         Set<Tag> tags = new HashSet<>();
-        articleDTO.getTagIds().forEach(e->{
+        articleDTO.getTagIds().forEach(e -> {
             tags.add(tagRepository.findOne(e));
         });
         article.setCategory(categoryRepository.findOne(articleDTO.getCategoryId()));
@@ -109,19 +109,45 @@ public class ArticleServiceImpl implements ArticleService {
                         " tb_article " +
                         " GROUP BY " +
                         " DATE_FORMAT( publish_time, '%m-%Y' ) " +
-                        " order by publish_time desc") ;
+                        " order by publish_time desc");
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
-        List<Map<String,Object>> rows = query.getResultList();
-        List<ArchiveDTO> dtos = BeanUtil.transMap2Bean(rows,ArchiveDTO.class);
+        List<Map<String, Object>> rows = query.getResultList();
+        List<ArchiveDTO> dtos = BeanUtil.transMap2Bean(rows, ArchiveDTO.class);
         return dtos;
     }
 
     @Override
-    public Map<String, List<Article>> findAllGroupByYear() {
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC,"publishTime");
+    public LinkedHashMap<Integer, List<Article>> findAllGroupByYear() {
+        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "publishTime");
         Sort sort = new Sort(order);
         List<Article> articles = articleRepository.findAll(sort);
-        Map<String, List<Article>> group  = articles.stream().collect(Collectors.groupingBy(Article::groupByYear));
+        LinkedHashMap<Integer, List<Article>> group = new LinkedHashMap<>();
+        articles.stream()
+                .collect(Collectors.groupingBy(Article::groupByYear))
+                .entrySet()
+                .stream()
+                .sorted(Map.Entry.<Integer, List<Article>>comparingByKey().reversed())
+                .forEachOrdered(e -> group.put(e.getKey(), e.getValue()));
+        return group;
+    }
+
+    @Override
+    public  LinkedHashMap<Integer,List<Article>> findByYearAndMonth(Integer year, Integer month) {
+        Query query = emf.createEntityManager().createNativeQuery("SELECT " +
+                " *  " +
+                "FROM " +
+                " tb_article  " +
+                "WHERE " +
+                " DATE_FORMAT( publish_time, '%Y' ) = ?  " +
+                " AND DATE_FORMAT( publish_time, '%m' ) = ?")
+                .setParameter(1,year)
+                .setParameter(2,month);
+
+        query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<Map<String, Object>> rows = query.getResultList();
+        List<Article> articles = BeanUtil.transMap2Bean(rows, Article.class);
+        LinkedHashMap<Integer, List<Article>> group = new LinkedHashMap<>();
+        group.put(year,articles);
         return group;
     }
 }
