@@ -17,10 +17,20 @@ spring:
       ddl-auto: update #update方式避免清空数据
     show-sql: true #打印sql语句
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
+  servlet:
+    multipart:
+      enable: true
+      location: /Users/kumataira/Documents/学习/个人博客开发/springboot-blog-admin/images
+      file-size-threshold: 5MB
+      max-request-size: 20MB
   #设置创建表时设置的引擎,InnoDB支持事务，MyISAM不支持事务
 # security:
 #  user:
 #    name: admin
 #     password: admin # 修改 Spring Security 默认的用户名和密码
+
+qiniu:
+  access-key: F7P5MZ7RbhvDFg3JcMLliXBHBR-GA3h2UM1_O179
+  secret-key: VxtCPM5md8y-uD8XY4muePAyhYS029tZPBxPokdv
+  bucket: yukongaaa-img-upload
 

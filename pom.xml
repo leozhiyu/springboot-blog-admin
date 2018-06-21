@@ -92,6 +92,13 @@
 			<artifactId>lombok</artifactId>
 			<version>${lombok-version}</version>
 		</dependency>
+
+		<!-- ⑦牛云-->
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>qiniu-java-sdk</artifactId>
+			<version>[7.2.0, 7.2.99]</version>
+		</dependency>
 	</dependencies>
 
 	<build>
