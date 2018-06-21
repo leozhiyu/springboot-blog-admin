@@ -1,6 +1,7 @@
 package com.blog.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "tb_category")
@@ -36,16 +38,8 @@ public class Category {
     private Date modifyTime;
 
     @JsonIgnore
-    @OneToMany( mappedBy = "category")
+    @OneToMany( mappedBy = "category",fetch = FetchType.EAGER)
     private Set<Article> items = new HashSet<Article>();
-
-    public Set<Article> getItems() {
-        return items;
-    }
-
-    public void setItems(Set<Article> items) {
-        this.items = items;
-    }
 
     public Long getId() {
         return id;
@@ -85,5 +79,13 @@ public class Category {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public Set<Article> getItems() {
+        return items;
+    }
+
+    public void setItems(Set<Article> items) {
+        this.items = items;
     }
 }

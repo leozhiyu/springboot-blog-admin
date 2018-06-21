@@ -6,6 +6,7 @@ import com.blog.domain.Article;
 import com.blog.domain.Tag;
 import com.blog.dto.ArchiveDTO;
 import com.blog.dto.ArticleDTO;
+import com.blog.vo.ArticleVO;
 import org.springframework.data.domain.Page;
 
 import java.util.*;
@@ -40,6 +41,14 @@ public interface ArticleService {
      * @return
      */
     Article getById(Long id);
+
+    /**
+     * 主键查询
+     * 带上下文章id
+     * @param id
+     * @return
+     */
+    ArticleVO getVoById(Long id);
 
     /**
      * 主键删除

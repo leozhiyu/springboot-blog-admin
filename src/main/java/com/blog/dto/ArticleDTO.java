@@ -1,6 +1,7 @@
 package com.blog.dto;
 
 import com.blog.domain.Article;
+import lombok.Data;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
  * @date: 2018/6/8 14:16
  * @description:
  */
+@Data
 public class ArticleDTO extends Article {
 
     private ArrayList<Long> tagIds ;
@@ -16,19 +18,4 @@ public class ArticleDTO extends Article {
     private Long categoryId;
 
 
-    public ArrayList<Long> getTagIds() {
-        return tagIds;
-    }
-
-    public void setTagIds(ArrayList<Long> tagIds) {
-        this.tagIds = tagIds;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
-    }
 }

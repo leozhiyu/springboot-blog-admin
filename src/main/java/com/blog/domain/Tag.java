@@ -2,6 +2,7 @@ package com.blog.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,6 +16,7 @@ import java.util.Set;
  * @date: 2018/6/6 14:52
  * @description:
  */
+@Data
 @Entity
 @Table(name = "tb_tag")
 public class Tag {
@@ -46,43 +48,5 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private Set<Article> articles;
 
-    public Set<Article> getArticles() {
-        return articles;
-    }
 
-    public void setArticles(Set<Article> articles) {
-        this.articles = articles;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTagName() {
-        return tagName;
-    }
-
-    public void setTagName(String tagName) {
-        this.tagName = tagName;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
 }

@@ -19,4 +19,7 @@ public interface ArticleRepository  extends JpaRepository<Article,Long>,JpaSpeci
 
     List<Article> findByArticleStatusOrderByPublishTimeDesc(Integer status);
 
+
+
+
 }

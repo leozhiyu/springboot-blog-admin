@@ -15,6 +15,26 @@ public class ArticleVO {
 
     private Date publishTime;
 
+    private Long preId;
+
+    private Long atfId;
+
+    public Long getPreId() {
+        return preId;
+    }
+
+    public void setPreId(Long preId) {
+        this.preId = preId;
+    }
+
+    public Long getAtfId() {
+        return atfId;
+    }
+
+    public void setAtfId(Long atfId) {
+        this.atfId = atfId;
+    }
+
     public Long getId() {
         return id;
     }

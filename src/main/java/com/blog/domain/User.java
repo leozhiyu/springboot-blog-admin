@@ -6,6 +6,7 @@
  */
 package com.blog.domain;
 
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 /**
  * 标记为实体以及对应的表，如果不加此注解，即使在yml配置了jpa也不会生效
  */
+@Data
 @Entity
 @Table(name = "tb_user")
 public class User {
@@ -74,115 +76,5 @@ public class User {
     @Column(columnDefinition = "datetime COMMENT '修改时间'")
     private Date modifyTime;
 
-    public Integer getUserId() {
-        return userId;
-    }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getUserPwd() {
-        return userPwd;
-    }
-
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
-    }
-
-    public String getUserOpenId() {
-        return userOpenId;
-    }
-
-    public void setUserOpenId(String userOpenId) {
-        this.userOpenId = userOpenId;
-    }
-
-    public String getUserWechat() {
-        return userWechat;
-    }
-
-    public void setUserWechat(String userWechat) {
-        this.userWechat = userWechat;
-    }
-
-    public String getUserQq() {
-        return userQq;
-    }
-
-    public void setUserQq(String userQq) {
-        this.userQq = userQq;
-    }
-
-    public String getUserWeibo() {
-        return userWeibo;
-    }
-
-    public void setUserWeibo(String userWeibo) {
-        this.userWeibo = userWeibo;
-    }
-
-    public String getUserGithub() {
-        return userGithub;
-    }
-
-    public void setUserGithub(String userGithub) {
-        this.userGithub = userGithub;
-    }
-
-    public byte[] getUserIcon() {
-        return userIcon;
-    }
-
-    public void setUserIcon(byte[] userIcon) {
-        this.userIcon = userIcon;
-    }
-
-    public String getUserSignature() {
-        return userSignature;
-    }
-
-    public void setUserSignature(String userSignature) {
-        this.userSignature = userSignature;
-    }
-
-    public String getUserAbout() {
-        return userAbout;
-    }
-
-    public void setUserAbout(String userAbout) {
-        this.userAbout = userAbout;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
 }

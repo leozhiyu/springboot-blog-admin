@@ -13,6 +13,7 @@ import com.blog.responsitory.CategoryRepository;
 import com.blog.responsitory.TagRepository;
 import com.blog.service.ArticleService;
 import com.blog.util.BeanUtil;
+import com.blog.vo.ArticleVO;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -99,6 +101,33 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Article getById(Long id) {
         return articleRepository.findOne(id);
+    }
+
+    @Override
+    public ArticleVO getVoById(Long id) {
+        Article article =  articleRepository.findOne(id);
+        ArticleVO vo = new ArticleVO();
+        BeanUtils.copyProperties(article,vo);
+        EntityManager manager =  emf.createEntityManager();
+        Query query =manager.createNativeQuery("select * from tb_article where  publish_time is not null and  publish_time < ? order by publish_time desc limit 1")
+                .setParameter(1,article.getPublishTime());
+        query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        List<Map<String, Object>> rows = query.getResultList();
+        if (!CollectionUtils.isEmpty(rows)) {
+            Article bef = (Article) BeanUtil.transMap2Bean(rows.get(0), Article.class);
+            vo.setPreId(bef.getId());
+        }
+
+        Query query1 =manager.createNativeQuery("select * from tb_article where publish_time is not null and publish_time > ? order by publish_time asc limit 1")
+                .setParameter(1,article.getPublishTime());
+        query1.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+            List<Map<String, Object>> rows1 = query1.getResultList();
+        if (!CollectionUtils.isEmpty(rows1)) {
+            Article aft = (Article) BeanUtil.transMap2Bean(rows1.get(0), Article.class);
+            vo.setAtfId(aft.getId());
+        }
+        manager.close();
+        return vo;
     }
 
     @Override

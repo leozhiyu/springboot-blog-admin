@@ -1,6 +1,7 @@
 package com.blog.domain;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -15,6 +16,7 @@ import java.util.Set;
  * @date: 2018/6/7 09:47
  * @description: 文章表
  */
+
 
 @Entity
 @Table(name = "tb_article")
@@ -127,7 +129,13 @@ public class Article {
         this.publishTime = publishTime;
     }
 
+    public Set<Tag> getTags() {
+        return tags;
+    }
 
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
 
     public Category getCategory() {
         return category;
@@ -135,14 +143,6 @@ public class Article {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public Set<Tag> getTags() {
-        return tags;
-    }
-
-    public void setTags(Set<Tag> tags) {
-        this.tags = tags;
     }
 
     public Integer groupByYear(){

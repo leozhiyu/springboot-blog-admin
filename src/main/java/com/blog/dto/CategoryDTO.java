@@ -1,6 +1,7 @@
 package com.blog.dto;
 
 import com.blog.domain.Category;
+import lombok.Data;
 
 import java.util.Date;
 
@@ -9,6 +10,7 @@ import java.util.Date;
  * @date: 2018/6/8 10:13
  * @description:
  */
+@Data
 public class CategoryDTO   {
 
     private Long id ;
@@ -36,51 +38,5 @@ public class CategoryDTO   {
 
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
-
-    public Integer getCategoryWeight() {
-        return categoryWeight;
-    }
-
-    public void setCategoryWeight(Integer categoryWeight) {
-        this.categoryWeight = categoryWeight;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public Date getModifyTime() {
-        return modifyTime;
-    }
-
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
-    }
 }

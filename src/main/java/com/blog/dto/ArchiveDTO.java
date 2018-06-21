@@ -1,10 +1,13 @@
 package com.blog.dto;
 
+import lombok.Data;
+
 /**
  * @author: yukong
  * @date: 2018/6/11 10:56
  * @description:
  */
+@Data
 public class ArchiveDTO {
 
     private String dateStr;
@@ -12,19 +15,4 @@ public class ArchiveDTO {
     private Integer count;
 
 
-    public String getDateStr() {
-        return dateStr;
-    }
-
-    public void setDateStr(String dateStr) {
-        this.dateStr = dateStr;
-    }
-
-    public Integer getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
 }

@@ -15,6 +15,7 @@ import com.blog.service.CategoryService;
 import com.blog.service.NoticeService;
 import com.blog.service.TagService;
 import com.blog.util.ResultUtil;
+import com.blog.vo.ArticleVO;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +54,8 @@ public class IndexController {
     Result<List<CategoryDTO>> findAllCategoryByName(@PathVariable String name){
         CategoryCondition categoryCondition = new CategoryCondition();
         categoryCondition.setCategoryName(name);
-        return ResultUtil.success(categoryService.findByCondition(categoryCondition));
+       List<CategoryDTO> list =categoryService.findByCondition(categoryCondition);
+        return ResultUtil.success(list);
     }
 
 
@@ -64,8 +66,8 @@ public class IndexController {
     }
 
     @GetMapping("/article/id/{id}")
-    private Result<Article> getById(@PathVariable Long id){
-        return ResultUtil.success(articleService.getById(id));
+    private Result<ArticleVO> getById(@PathVariable Long id){
+        return ResultUtil.success(articleService.getVoById(id));
     }
 
     @GetMapping("/archive/month")
