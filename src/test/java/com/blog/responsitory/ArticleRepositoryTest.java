@@ -26,10 +26,5 @@ public class ArticleRepositoryTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Test
-    public void findByCategoryOrderByPublishTime() {
-        Category category = categoryRepository.findCategoryByCategoryName("算法集合1");
-        List<Article> articles = articleRepository.findByCategoryOrderByPublishTime(category);
-        System.out.println(articles.size());
-    }
+
 }

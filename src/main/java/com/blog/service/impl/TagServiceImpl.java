@@ -58,6 +58,7 @@ public class TagServiceImpl implements TagService {
         });
 
         Pageable pageable = new PageRequest(tagCondition.getCurrPage(), tagCondition.getPageSize(),sort);
+
         return tagRepository.findAll(specification,pageable);
     }
 

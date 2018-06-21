@@ -60,14 +60,14 @@ public class Article {
     private Date publishTime;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE, CascadeType.REFRESH })
     @JoinTable(name = "article_tag", joinColumns = {
             @JoinColumn(name = "article_id", referencedColumnName = "id")}, inverseJoinColumns = {
             @JoinColumn(name = "tag_id", referencedColumnName = "id")})
     @JsonView(Article.SimpleArticleView.class)
     private Set<Tag> tags;
 
-    @ManyToOne(cascade = { CascadeType.MERGE, CascadeType.REFRESH }, optional = false)
+    @ManyToOne
     @JoinColumn(name="category_id")
     private Category category;
 

@@ -36,8 +36,7 @@ public class Category {
     private Date modifyTime;
 
     @JsonIgnore
-    @OneToMany(cascade = { CascadeType.PERSIST }, fetch = FetchType.EAGER, mappedBy = "category")
-    // fetch是否延迟加载，mappedBy有它的一方为关系被维护端。
+    @OneToMany( mappedBy = "category")
     private Set<Article> items = new HashSet<Article>();
 
     public Set<Article> getItems() {

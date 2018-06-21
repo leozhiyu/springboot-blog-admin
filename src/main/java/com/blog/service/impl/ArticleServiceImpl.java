@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
@@ -65,6 +66,10 @@ public class ArticleServiceImpl implements ArticleService {
                 Predicate _name = criteriaBuilder.like(root.get("articleTitle"), "%" + articleCondition.getArticleTitle() + "%");
                 predicates.add(_name);
             }
+            if (articleCondition.getArticleStatus() != null) {
+                Predicate _status = criteriaBuilder.equal(root.get("articleStatus"),  articleCondition.getArticleStatus());
+                predicates.add(_status);
+            }
             return criteriaBuilder.and(predicates.toArray(new Predicate[]{}));
         });
 
@@ -72,9 +77,10 @@ public class ArticleServiceImpl implements ArticleService {
         return articleRepository.findAll(specification, pageable);
     }
 
+    @Transactional
     @Override
     public void save(ArticleDTO articleDTO) {
-        if (articleDTO.getId() != null && ArticleStatusEnum.PUBLISH.getCode().equals(articleDTO.getArticleStatus())) {
+        if (!ArticleStatusEnum.PUBLISH.getCode().equals(articleDTO.getArticleStatus())) {
 
         } else {
             articleDTO.setPublishTime(new Date());
@@ -108,7 +114,7 @@ public class ArticleServiceImpl implements ArticleService {
                         " DATE_FORMAT( publish_time, '%m-%Y' ) date_str," +
                         " count( * ) count " +
                         " FROM" +
-                        " tb_article " +
+                        " tb_article where article_status=1" +
                         " GROUP BY " +
                         " DATE_FORMAT( publish_time, '%m-%Y' ) " +
                         " order by publish_time desc");
@@ -121,9 +127,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public LinkedHashMap<Integer, List<Article>> findAllGroupByYear() {
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "publishTime");
-        Sort sort = new Sort(order);
-        List<Article> articles = articleRepository.findAll(sort);
+        List<Article> articles = articleRepository.findByArticleStatusOrderByPublishTimeDesc(ArticleStatusEnum.PUBLISH.getCode());
         LinkedHashMap<Integer, List<Article>> group = new LinkedHashMap<>();
         articles.stream()
                 .collect(Collectors.groupingBy(Article::groupByYear))
@@ -158,9 +162,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Map<String, List<Article>> findArticleGroupByCategory() {
-        Sort.Order order = new Sort.Order(Sort.Direction.DESC, "publishTime");
-        Sort sort = new Sort(order);
-        List<Article> articles = articleRepository.findAll(sort);
+
+        List<Article> articles = articleRepository.findByArticleStatusOrderByPublishTimeDesc(ArticleStatusEnum.PUBLISH.getCode());
         Map<String, List<Article>> group = articles.stream()
                 .collect(Collectors.groupingBy(Article::groupByCategory));
         return group;
@@ -169,7 +172,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public Map<String, List<Article>> findArticleGroupByCategory(String categoryName) {
         Category category = categoryRepository.findCategoryByCategoryName(categoryName);
-        List<Article> articles = articleRepository.findByCategoryOrderByPublishTime(category);
+        List<Article> articles = articleRepository.findByArticleStatusOrderByPublishTimeDesc(ArticleStatusEnum.PUBLISH.getCode());
         Map<String, List<Article>> group = articles.stream()
                 .collect(Collectors.groupingBy(Article::groupByCategory));
         return group;

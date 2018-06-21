@@ -83,7 +83,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> findAll() {
         EntityManager manager = emf.createEntityManager();
         Query query = manager.createNativeQuery(
-                "SELECT tb.*,( SELECT count( * ) count FROM  tb_article ta WHERE  ta.category_id = tb.id )  count FROM tb_category tb");
+                "SELECT tb.*,( SELECT count( * ) count FROM  tb_article ta WHERE  ta.category_id = tb.id and ta.article_status = 1 )  count FROM tb_category tb");
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<CategoryDTO> dtos = BeanUtil.transMap2Bean(rows,CategoryDTO.class);
@@ -95,7 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
     public List<CategoryDTO> findByCondition(CategoryCondition categoryCondition) {
         EntityManager manager = emf.createEntityManager();
         Query query = manager.createNativeQuery(
-                "SELECT tb.*,( SELECT count( * ) count FROM  tb_article ta WHERE  ta.category_id = tb.id )  " +
+                "SELECT tb.*,( SELECT count( * ) count FROM  tb_article ta WHERE  ta.category_id = tb.id and ta.article_status = 1 )  " +
                         "count FROM tb_category tb where tb.category_name=?").setParameter(1,categoryCondition.getCategoryName());
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();

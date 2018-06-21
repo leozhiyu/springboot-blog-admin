@@ -9,6 +9,7 @@ import com.blog.domain.Tag;
 import com.blog.dto.ArchiveDTO;
 import com.blog.dto.CategoryDTO;
 import com.blog.dto.TagDTO;
+import com.blog.enums.ArticleStatusEnum;
 import com.blog.service.ArticleService;
 import com.blog.service.CategoryService;
 import com.blog.service.NoticeService;
@@ -55,14 +56,10 @@ public class IndexController {
         return ResultUtil.success(categoryService.findByCondition(categoryCondition));
     }
 
-    @GetMapping("/tag")
-    Result<List<Tag>> findAllTag() {
-        return ResultUtil.success(tagService.findAll());
-    }
-
 
     @GetMapping(value = "/article/page")
     private Page<Article> page(@ModelAttribute ArticleCondition articleCondition){
+        articleCondition.setArticleStatus(ArticleStatusEnum.PUBLISH.getCode());
         return articleService.listByCondition(articleCondition);
     }
 

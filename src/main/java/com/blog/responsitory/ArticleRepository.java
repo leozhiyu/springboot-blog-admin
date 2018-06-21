@@ -15,6 +15,8 @@ import java.util.List;
 public interface ArticleRepository  extends JpaRepository<Article,Long>,JpaSpecificationExecutor<Article> {
 
 
-    List<Article> findByCategoryOrderByPublishTime(Category category);
+    List<Article> findByCategoryOrderByPublishTimeDesc(Category category);
+
+    List<Article> findByArticleStatusOrderByPublishTimeDesc(Integer status);
 
 }
