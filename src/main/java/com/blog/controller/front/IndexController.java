@@ -15,6 +15,7 @@ import com.blog.service.CategoryService;
 import com.blog.service.NoticeService;
 import com.blog.service.TagService;
 import com.blog.util.ResultUtil;
+import com.blog.vo.ArticleAndTagVO;
 import com.blog.vo.ArticleVO;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,7 +67,7 @@ public class IndexController {
     }
 
     @GetMapping("/article/id/{id}")
-    private Result<ArticleVO> getById(@PathVariable Long id){
+    private Result<ArticleAndTagVO> getById(@PathVariable Long id){
         return ResultUtil.success(articleService.getVoById(id));
     }
 

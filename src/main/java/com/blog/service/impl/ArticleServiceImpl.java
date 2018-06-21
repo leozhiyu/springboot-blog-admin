@@ -13,6 +13,7 @@ import com.blog.responsitory.CategoryRepository;
 import com.blog.responsitory.TagRepository;
 import com.blog.service.ArticleService;
 import com.blog.util.BeanUtil;
+import com.blog.vo.ArticleAndTagVO;
 import com.blog.vo.ArticleVO;
 import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
@@ -60,7 +61,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Page<Article> listByCondition(ArticleCondition articleCondition) {
-        Sort.Order modifyTimeOrder = new Sort.Order(Sort.Direction.DESC, "modifyTime");
+        Sort.Order modifyTimeOrder = new Sort.Order(Sort.Direction.DESC, "publishTime");
         Sort sort = new Sort(modifyTimeOrder);
         Specification<Article> specification = ((root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<Predicate>();
@@ -85,7 +86,9 @@ public class ArticleServiceImpl implements ArticleService {
         if (!ArticleStatusEnum.PUBLISH.getCode().equals(articleDTO.getArticleStatus())) {
 
         } else {
-            articleDTO.setPublishTime(new Date());
+            if (articleDTO.getId() == null){
+                articleDTO.setPublishTime(new Date());
+            }
         }
         Article article = new Article();
         BeanUtils.copyProperties(articleDTO, article);
@@ -104,12 +107,12 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public ArticleVO getVoById(Long id) {
+    public ArticleAndTagVO getVoById(Long id) {
         Article article =  articleRepository.findOne(id);
-        ArticleVO vo = new ArticleVO();
+        ArticleAndTagVO vo = new ArticleAndTagVO();
         BeanUtils.copyProperties(article,vo);
         EntityManager manager =  emf.createEntityManager();
-        Query query =manager.createNativeQuery("select * from tb_article where  publish_time is not null and  publish_time < ? order by publish_time desc limit 1")
+        Query query =manager.createNativeQuery("select * from tb_article where article_status = 1 and  publish_time is not null and  publish_time < ? order by publish_time desc limit 1")
                 .setParameter(1,article.getPublishTime());
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String, Object>> rows = query.getResultList();
@@ -118,7 +121,7 @@ public class ArticleServiceImpl implements ArticleService {
             vo.setPreId(bef.getId());
         }
 
-        Query query1 =manager.createNativeQuery("select * from tb_article where publish_time is not null and publish_time > ? order by publish_time asc limit 1")
+        Query query1 =manager.createNativeQuery("select * from tb_article where  article_status = 1 and  publish_time is not null and publish_time > ? order by publish_time asc limit 1")
                 .setParameter(1,article.getPublishTime());
         query1.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
             List<Map<String, Object>> rows1 = query1.getResultList();
