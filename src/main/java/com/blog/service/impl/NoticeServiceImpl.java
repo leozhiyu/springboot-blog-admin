@@ -94,8 +94,8 @@ public class NoticeServiceImpl implements NoticeService {
         EntityManager manager = emf.createEntityManager();
         Query query = manager.createNativeQuery(
                 "select id, notice_title, notice_content, creat_time, modify_time " +
-                " from tb_notice ORDER  by creat_time " +
-                        "limit 1");
+                " from tb_notice ORDER  by creat_time DESC " +
+                        " limit 1");
         query.unwrap(SQLQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         List<Map<String,Object>> rows = query.getResultList();
         List<Notice> dtos = BeanUtil.transMap2Bean(rows,Notice.class);

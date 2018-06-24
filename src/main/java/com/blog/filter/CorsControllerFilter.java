@@ -30,7 +30,6 @@ public class CorsControllerFilter extends OncePerRequestFilter {
         res.setHeader("Access-Control-Allow-Credentials", "true");
         res.setHeader("XDomainRequestAllowed", "1");
         chain.doFilter(request, response);
-
     }
 
 }

@@ -34,7 +34,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     CorsControllerFilter corsControllerFilter;
 
-
+    /**
+     * 自定义配置，配置拦截策略
+     * @param http
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
