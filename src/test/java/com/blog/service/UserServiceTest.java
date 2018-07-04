@@ -22,4 +22,22 @@ public class UserServiceTest {
         user.setUserEmail("admin@admin.com");
         userService.register(user);
     }
+
+
+    public static void main(String[] args) {
+        a("a","b");
+    }
+
+    /*
+    public static void a(String a, String b){
+        System.out.println(1);
+        System.out.println(a+b);
+    }
+*/
+
+    public  static void a(String ...a){
+        for (String as:a) {
+            System.out.println(as);
+        }
+    }
 }

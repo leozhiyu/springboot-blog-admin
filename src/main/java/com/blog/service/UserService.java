@@ -26,5 +26,16 @@ public interface UserService {
      */
     public Result register(User user) ;
 
+    /**
+     * 更新用户信息
+     * @param user
+     */
+    void save(User user);
 
+    /**
+     * 根据id查询用户信息
+     * @param id
+     * @return
+     */
+    public User findUserById(Integer id);
 }

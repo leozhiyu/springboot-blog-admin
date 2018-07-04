@@ -65,11 +65,11 @@ public class BeanUtil {
                 Object value = map.get(camel2Underline(field.getName()).toLowerCase());
                 if (value instanceof BigInteger) {
                     String fieldType = field.getGenericType().getTypeName();
-                    if(LONG.equals(fieldType)) {
+                    if (LONG.equals(fieldType)) {
                         Long val = ((BigInteger) value).longValue();
                         field.set(obj, val);
                     }
-                    if(INTEGER.equals(fieldType)){
+                    if (INTEGER.equals(fieldType)) {
                         Integer val = ((BigInteger) value).intValue();
                         field.set(obj, val);
                     }
@@ -84,6 +84,7 @@ public class BeanUtil {
         }
 
         return obj;
+
 
     }
 
